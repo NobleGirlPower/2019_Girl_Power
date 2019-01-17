@@ -3,11 +3,9 @@
 #define target_theta_45 225000 //numbers for wallaby-4188
 #define target_theta_90 507500
 #define target_theta_180 1061500
-#define target_theta_360 2175000
-#define target_theta_m45 225000
-#define target_theta_m90 507500
-#define target_theta_m180 1061500
-#define target_theta_m360 2175000
+int target_theta_m45 = target_theta_45;
+int target_theta_m90 = target_theta_90;
+int target_theta_m180 = target_theta_180;
 
 #define analog_white 300
 #define analog_black 3500
@@ -182,10 +180,6 @@ void turn_with_gyro_create(int speed, int deg){
             targetTheta = target_theta_180;
            create_drive_direct(speed,speed*-1);
             break;
-        case 360:
-            targetTheta = target_theta_360;
-            create_drive_direct(speed,speed*-1);
-            break;
         case -45:
             targetTheta = target_theta_m45;
             create_drive_direct(speed*-1,speed);
@@ -196,10 +190,6 @@ void turn_with_gyro_create(int speed, int deg){
             break;
         case -180:
             targetTheta = target_theta_m180;
-            create_drive_direct(speed*-1,speed);
-            break;
-        case -360:
-            targetTheta = target_theta_m360;
             create_drive_direct(speed*-1,speed);
             break;
         default:
@@ -231,10 +221,6 @@ void turn_with_gyro(int speed, int deg){
             targetTheta = target_theta_180;
             move(speed,speed*-1);
             break;
-        case 360:
-            targetTheta = target_theta_360;
-            move(speed,speed*-1);
-            break;
         case -45:
             targetTheta = target_theta_m45;
             move(speed*-1,speed);
@@ -245,10 +231,6 @@ void turn_with_gyro(int speed, int deg){
             break;
         case -180:
             targetTheta = target_theta_m180;
-            move(speed*-1,speed);
-            break;
-        case -360:
-            targetTheta = target_theta_m360;
             move(speed*-1,speed);
             break;
         default:
@@ -263,4 +245,21 @@ void turn_with_gyro(int speed, int deg){
     mav(right_motor, 0);
     mav(right_motor, 0);
 }
+
+void PID_gyro_drive_create(int speed, double time){
+ 	calibrate_gyro();
+    double startTime = seconds();
+    double theta = 0;
+    while ((seconds() - startTime) < time){
+        if (speed > 0){
+            create_drive_direct((speed + (speed * theta/100000)),(speed - (speed * theta/100000)));
+        }
+        else{
+            create_drive_direct((speed - (speed * theta/100000)), (speed + (speed * theta/100000)));
+        }
+        msleep(15);
+        theta += (gyro_z() - bias) * 10;
+    }
+}
+
 
