@@ -20,6 +20,7 @@ int back = base_min;
 int open = hand_max;
 int closed = hand_min;
 int top_meople = arm_min + 600;
+int meople_open = hand_min + 1040;
 
 void slow_arm (int x )//this funtion slows 
 { 
@@ -121,16 +122,8 @@ void arm_out(){
     slow_arm(down);
 }
 
-void meople_extraction_left(){
-    while (analog(0)>1800 && analog(0)<2900) {
-		if (analog(0) > 2700){
-        slow_hand (600);
-        printf("meople found\n");
-    	}
-		if (analog(0) < 2700){
-        create_drive_direct (20, 20);
-        printf("no meoples\n");
-    	}
+void meople_extraction_top(){
+    slow_arm (top_meople);
+    //slow_hand (meople_open);
         
-    }
 }

@@ -1,7 +1,7 @@
 #define right_motor 0
 #define left_motor 1
 #define target_theta_45 265000
-#define target_theta_90 540000 // WORKING ON NUMBERS FOR 4170
+#define target_theta_90 527000 // WORKING ON NUMBERS FOR 4170 //original 540000
 #define target_theta_180 1095000 // ALL NUMBERS SHOULD BE GOOD
 int target_theta_m45 = target_theta_45;
 int target_theta_m90 = target_theta_90;
@@ -326,17 +326,42 @@ void square_up_front_create(int ending,int speed){
         }
     }
 }
+int a =1;
 
-void linefollow_create(int speed){
-    while(1){
-        if(get_create_rcliff_amt()<cliff){
+void linefollow_create(int reading){
+    while (analog(0)< reading)
+    {
+        if (get_create_lfcliff_amt() < 1600)
+        {
+            create_drive_direct(50,100);
+        }
+
+        else
+        {
+            create_drive_direct(100,50);
+        }
+        msleep(15);
+    }
+    /*while(analog(0)< reading){
+        if(get_create_lcliff_amt()<cliff){
+            create_drive_direct((speed)/2,speed);
+        }
+        if(get_create_lcliff_amt()>cliff){
+            create_drive_direct(speed,(speed)/2);
+        }
+    }*/
+}
+
+/*void linefollow_create(int speed){
+    while(analog(0)< 1300){
+        if(get_create_lcliff_amt()<cliff){
             create_drive_direct((3*speed)/4,speed);
         }
-        if(get_create_rcliff_amt()>cliff){
+        if(get_create_lcliff_amt()>cliff){
             create_drive_direct(speed,(3*speed)/4);
         }
     }
-}
+}*/
 
 void square_up_back_create(int ending,int speed){
     if(speed > 0 && speed < 600){
@@ -399,4 +424,21 @@ void square_up_back_create(int ending,int speed){
 
             }
     }
+}
+
+void meople_1(){
+	linefollow_create(1500); //sees pipe railing 
+    create_drive_direct (150,150); //go x amount of distance until extract
+    msleep (1000);
+    turn_with_gyro_create(50, -90);
+}
+
+void meople_2(){
+	linefollow_create(1500); //sees between tower and meople
+    turn_with_gyro_create(50, -90);
+}
+
+void meople_3(){
+	linefollow_create(1500); //sees tower
+    turn_with_gyro_create(50, -90);
 }
