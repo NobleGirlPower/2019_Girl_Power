@@ -1,129 +1,64 @@
-#define hand 3
-#define arm 1
+/*#define hand 3
+#define arm 2
 #define base 0
-#define arm_max 1375
-#define arm_min 100
-#define arm_start 1125
+#define arm_max 1125
+#define arm_min 400
+#define arm_mid 525
 #define hand_max 2047 //also start
 #define hand_min 0
 #define base_max 1500
 #define base_min 0
 #define base_start 150
 #define left 2
-#define right 1
+#define right 1*/
 
-int up = arm_min;
-int down = arm_max;
-int mid = arm_start;
-int front = base_max;
-int back = base_min;
-int open = hand_max;
-int closed = hand_min;
-int top_meople = arm_min + 600;
-int meople_open = hand_min + 1040;
+#define down 1200
+#define front 1300
+#define closed 600
 
-void slow_arm (int x )//this funtion slows 
-{ 
-	
-    enable_servo(arm);
-    int desired_position;
-    int current_position = get_servo_position(arm);
-    if (x > arm_max) {desired_position = arm_max;}
-    else if(x < arm_min) {desired_position = arm_min;}
-    else {desired_position = x;}
+int up;
+int arm_water;
+int arm_building;
+//int down;
+int mid;
+//int front;
+int back;
+int open;
+//int closed;
+int hand_valve;
+int tight;
+int tightish;
 
-    while(current_position != desired_position)
-    {
-        if(current_position < desired_position)
-        { current_position=current_position +1;
-         set_servo_position(arm, current_position);
-         msleep(2);
-        }
-        if(current_position > desired_position)
-        { current_position=current_position -1;
-         set_servo_position(arm, current_position);
-         msleep(2);
-        }
-    }
+int turn;
+int PID;
+int square;
 
-    set_servo_position (arm, x);
-   // disable_servo (arm);
-}
-
-void slow_hand (int x )//this funtion slows 
-{ 
-	
-    enable_servo(hand);
-    int desired_position;
-    int current_position = get_servo_position(hand);
-    if (x > hand_max) {desired_position = hand_max;}
-    else if(x < hand_min) {desired_position = hand_min;}
-    else {desired_position = x;}
-
-    while(current_position != desired_position)
-    {
-        if(current_position < desired_position)
-        { current_position=current_position +1;
-         set_servo_position(hand, current_position);
-         msleep(2);
-        }
-        if(current_position > desired_position)
-        { current_position=current_position -1;
-         set_servo_position(hand, current_position);
-         msleep(2);
-        }
-    }
-
-    set_servo_position (hand, x);
-    disable_servo (hand);
-}
-
-void slow_base (int x )//this funtion slows 
-{ 
-	
-    enable_servo(base);
-    int desired_position;
-    int current_position = get_servo_position(base);
-    if (x > base_max) {desired_position = base_max;}
-    else if(x < base_min) {desired_position = base_min;}
-    else {desired_position = x;}
-
-    while(current_position != desired_position)
-    {
-        if(current_position < desired_position)
-        { current_position=current_position +1;
-         set_servo_position(base, current_position);
-         msleep(2);
-        }
-        if(current_position > desired_position)
-        { current_position=current_position -1;
-         set_servo_position(base, current_position);
-         msleep(2);
-        }
-    }
-
-    set_servo_position (base, x);
-    disable_servo (base);
-}
-
-void start_position(){
-    slow_arm(up);
-    slow_base(back);
-    slow_arm(mid);
-    slow_hand(open);
-}
-
-void set_up_meople(){
-    slow_arm (200);
-    slow_hand (1040);
-}
-void arm_out(){
-    slow_base(front);
-    slow_arm(down);
-}
-
-void meople_extraction_top(){
-    slow_arm (top_meople);
-    //slow_hand (meople_open);
-        
-}
+void slow_arm (int x );//this funtion slows 
+void slow_hand (int x );//this funtion slows 
+void slow_base (int x );//this funtion slows 
+void start_position();
+void arm_out();
+void slow_base_valve();//this funtion slows
+void slow_start();
+void slow_base_front();
+void slow_arm_pre_valve();
+void slow_arm_up();
+void slow_arm_up2();
+void slow_hand_open();
+void slow_hand_small_open();
+void slow_arm_down();
+void slow_hand_close();
+void short_pause();
+void slow_arm_bucket();
+void fast_hand();
+void shake_arm();
+void grab_water();
+void pile_water();
+void push_water();
+void recover_water();
+void first_water();
+void all_water();
+void first_water_down();
+void all_water_drop();
+void shake_arm_bucket();
+void fast_arm();
